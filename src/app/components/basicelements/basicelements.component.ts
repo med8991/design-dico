@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-basicelements',
@@ -10,7 +11,8 @@ export class BasicelementsComponent implements OnInit {
     doubleSlider = [20, 60];
     state_default: boolean = true;
     focus: any;
-    constructor() { }
+    
+    constructor(private router: Router){}
 
     ngOnInit() {}
 

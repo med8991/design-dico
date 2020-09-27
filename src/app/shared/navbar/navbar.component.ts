@@ -1,5 +1,6 @@
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { Router,NavigationStart} from '@angular/router';
 
 @Component({
     selector: 'app-navbar',
@@ -10,7 +11,7 @@ export class NavbarComponent implements OnInit {
     private toggleButton: any;
     private sidebarVisible: boolean;
 
-    constructor(public location: Location, private element : ElementRef) {
+    constructor(public location: Location, private element : ElementRef, private router: Router) {
         this.sidebarVisible = false;
     }
 
@@ -59,6 +60,18 @@ export class NavbarComponent implements OnInit {
             return false;
         }
     }
+    isResearchForm() {
+        var titlee = this.location.prepareExternalUrl(this.location.path());
+        if(titlee.charAt(0) === '/basicelements'){
+            titlee = titlee.slice( 1 );
+        }
+          if( titlee === '/basicelements' ) {
+              return true;
+          }
+          else {
+              return false;
+          }
+      }
     isDocumentation() {
       var titlee = this.location.prepareExternalUrl(this.location.path());
       if(titlee.charAt(0) === '#'){

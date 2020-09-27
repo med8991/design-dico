@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app.routing';
+import {Ng2PageScrollModule} from 'ng2-page-scroll';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
@@ -25,6 +26,7 @@ import { ComponentsModule } from './components/components.module';
     RouterModule,
     ComponentsModule,
     AppRoutingModule,
+    Ng2PageScrollModule
   ],
   providers: [],
   bootstrap: [AppComponent]
