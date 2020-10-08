@@ -3,28 +3,28 @@
         <div class="tim-title">
             <h2 style="text-align: center;">Faites votre recherche..</h2>
         </div>
-        <form>
+        <form (ngSubmit)="onSubmit(f)" #f="ngForm">
             <div class="form-group row">
                 <label class="btn btn-link btn-default">Le terme à rechercher</label>
                 <div class="col-sm-3">
                     <div class="form-group">
-                        <input type="text" class="form-control" id="idWord" placeholder="Saisir votre terme içi..">
+                        <input type="text" class="form-control" id="idWord" [(ngModel)]="myword" placeholder="Saisir votre terme içi.." name="myword">
                     </div>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="btn btn-link btn-default">Identifiant de relation</label>
                 <div class="col-sm-3">
-                    <input type="number" class="form-control" id="idRelation" placeholder="Saisir l'identifiant ici..">
+                    <input type="number" class="form-control" id="idRelation" placeholder="Saisir l'identifiant ici.." name="myidr">
                 </div>
             </div>
-            <fieldset class="form-group">
+            <!-- <fieldset class="form-group">
                 <div class="row">
                     <label class="btn btn-link btn-default">Critères</label>
                     <div class="col-sm-10">
                         <div class="form-check">
                             <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" id="option1" value="">
+                            <input class="form-check-input" type="checkbox" id="option1" value="" name="">
                             Pas de relations entrantes
                             <span class="form-check-sign"></span>
                           </label>
@@ -38,11 +38,11 @@
                         </div>
                     </div>
                 </div>
-            </fieldset>
+            </fieldset> -->
 
             <div class="form-group row" style="text-align: center;">
                 <div class="col-sm-10">
-                    <button type="submit" class="btn btn-primary btn-round"><i class="fa fa-search"></i>Chercher</button>
+                    <button type="submit" class="btn btn-primary btn-round"><i class="fa fa-search" id="chercher"></i>Chercher</button>
                 </div>
             </div>
         </form>
@@ -228,5 +228,6 @@
                 <nouislider class="slider slider-info" [connect]="true" [min]="0" [max]="100" [step]="1" [(ngModel)]="doubleSlider" [tooltips]="false"></nouislider>
             </div>
         </div> -->
+        <h1>Définition</h1>{{definition}}
     </div>
 </div>
