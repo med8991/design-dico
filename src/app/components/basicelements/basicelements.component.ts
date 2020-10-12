@@ -23,6 +23,9 @@ export class BasicelementsComponent implements OnInit {
   isAvailable = false ; 
   public error :String;
   public myword : String;
+  public show : boolean ;
+  public isnotfind : boolean;
+  public message : String;
 
   streets: string[] = ['Champs-Élysées', 'Lombard Street', 'Abbey Road', 'Fifth Avenue'];
 
@@ -39,10 +42,11 @@ export class BasicelementsComponent implements OnInit {
   }
 
   onSubmit(entry : String) {
-   
+    this.show = false;
     this.relation = null;
-    this.isAvailable = false ; 
-    
+    this.isAvailable = true ; 
+    this.isnotfind = false;
+    this.message = this.myword;
     
     this.definition = "";
     this.node = [];
@@ -60,29 +64,27 @@ export class BasicelementsComponent implements OnInit {
     if(this.myword == null){
       console.log("Veuillez saisir un mot");
     }else{
-
       let varsend ;
       if(typeof entry === 'string' && this.myword.length == 0 ){
        varsend = entry;
       }else{
         varsend = this.myword;
       }
-      // this.spinner.show();
       this.Reso.getWords(varsend).subscribe((reponse) => {
         
         if(typeof reponse === 'string'){
           console.log("no things");
           this.error = reponse;
-          this.isAvailable = true; 
+          this.isAvailable = false;
+          this.isnotfind = true;
         }else{
           this.definition = reponse.definition;
           this.relation = reponse.relation_sortant ; 
+          this.isAvailable = false;
+          this.show = true;
+
         }
-      // setTimeout(() => {
-      //   this.spinner.hide();
-      // },2000);
- 
-       
+
       },(error) => {
        console.log("Error");
      });
@@ -93,8 +95,9 @@ export class BasicelementsComponent implements OnInit {
 
 
   ngOnInit() : void  {
-
-  
+    this.show = false;
+    this.isAvailable = false; 
+    this.isnotfind = false;
   }
 
 
