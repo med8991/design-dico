@@ -15,13 +15,15 @@ import { FooterComponent } from './shared/footer/footer.component';
 import { RezoService } from './rezo.service'
 
 import { ComponentsModule } from './components/components.module';
+import { Error404Component } from './error404/error404.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    FooterComponent
+    FooterComponent,
+    Error404Component
   ],
   imports: [
     BrowserModule,

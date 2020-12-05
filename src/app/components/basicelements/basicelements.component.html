@@ -65,8 +65,32 @@
                 <h3>le mot <span style="color: brown;">{{message}}</span> n'existe pas</h3>
             </div>
         </div>
-            <h1 *ngIf = "show">Définition</h1>
+        
+                <!-- <a href="#0" class="btn btn-link btn-default">Definition</a>
+                <a href="#0" class="btn btn-link btn-primary">Raffinement</a>
+                <a href="#0" class="btn btn-link btn-success">Associations d'idées</a>
+                <a href="#0" class="btn btn-link btn-info">Theme/domaine</a>
+                <a href="#0" class="btn btn-link btn-warning">Synonymes et quasi-synonymes</a>
+                <a href="#0" class="btn btn-link btn-danger">Traduction de maison</a>
+                <a href="#0" class="btn btn-link btn-neutral">Génériques</a>
+             -->
+             
+        
+            <h6 *ngIf = "show" class="btn btn-link btn-warning">Définition</h6>
+            <br>
             {{definition}}
+            <div class="rafinnement" *ngFor="let elem of element"> <p style="margin-left: 10px;">{{elem}}</p>   </div>
+            <br>
+            <br>
+            <div *ngIf = "show" >
+            <h6 class="btn btn-link btn-info" >Raffinement</h6>
+            <br>
+             <p *ngFor="let raf of raffinement">{{message}}({{raf.rfLink}})</p>
+             <h6 class="btn btn-link btn-success" >Association d'idées</h6>
+             <br>
+                <button type="button" *ngFor="let reltype of association | slice:0:30; " style="padding: 3px;" class="btn btn-default" (click)="searchWord(reltype.name)">{{reltype.name}}</button>
+
+            </div>
 
         <!-- <div id="buttons">
             <div class="tim-title">

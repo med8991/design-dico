@@ -16,60 +16,67 @@ export class BasicelementsComponent implements OnInit {
   public definition : String ; 
   public search : any = [] ;
   public articles : string;
-  mots : myObject ; 
   public myid : String =null; 
   public node = [] ;
-  public relation : String ;
+  public relation = [] ;
   isAvailable = false ; 
   public error :String;
   public myword : String;
   public show : boolean ;
+  public raffinement : [] ; 
   public isnotfind : boolean;
   public message : String;
-
-  streets: string[] = ['Champs-Élysées', 'Lombard Street', 'Abbey Road', 'Fifth Avenue'];
+  public otherDef : String ;
+  public element = [];
+  public association = [];
 
   constructor(private Reso : RezoService ,private http : HttpClient) { }
 
-  searchWord(mot  : String){
-    console.log("haha")
-    this.onSubmit(mot)
+  searchWord(mot : String){
+    console.log("ici");
+    this.onSubmit(mot);
 
   }
-  
-  test(){
-    console.log(this.myword);
-  }
-
   onSubmit(entry : String) {
-    this.show = false;
-    this.relation = null;
-    this.isAvailable = true ; 
-    this.isnotfind = false;
-    this.message = this.myword;
-    
-    this.definition = "";
-    this.node = [];
-    var myobject = {
-      name : "",
-      def : "",
-      node : "",
-      relation : ""
-    };
-    this.articles  = "";  
-    
-    let name = document.getElementById("name");
+    console.log(entry)
+    this.initVar();
+    this.message = this.myword; 
     console.log(this.myword);
 
     if(this.myword == null){
       console.log("Veuillez saisir un mot");
     }else{
+      this.isAvailable = true ; 
       let varsend ;
-      if(typeof entry === 'string' && this.myword.length == 0 ){
+      if(typeof entry == 'string' && this.myword.length == 0 ){
+        console.log("dehors")
        varsend = entry;
       }else{
+        console.log("dedans")
         varsend = this.myword;
       }
+      let fromCache = this.getLocalStorage( varsend.toString());
+      if(fromCache != null){
+        this.definition = fromCache.definition;
+        this.otherDef = fromCache.otherDef;
+        this.relation = fromCache.relation_sortant;
+        for(let i = 0 ; i < this.relation.length ; i++){
+          if(this.relation[i].type == 0 ){
+            let word = {"name" : "","type":0};
+            word.name = this.relation[i].relation;
+            this.association.push(word);
+            }
+        }
+        console.log(this.association);
+          if(this.otherDef.length > 0 ){
+          this.element = this.otherDef.split("//DEF//");  
+          }
+        this.relation = fromCache.relation_sortant ; 
+        this.isAvailable = false;
+        this.show = true;
+        this.raffinement = fromCache.Raffinement;
+      }else{
+
       this.Reso.getWords(varsend).subscribe((reponse) => {
         
         if(typeof reponse === 'string'){
@@ -80,17 +87,33 @@ export class BasicelementsComponent implements OnInit {
         }else{
           this.definition = reponse.definition;
           this.relation = reponse.relation_sortant ; 
+          for(let i = 0 ; i < this.relation.length ; i++){
+            if(this.relation[i].type == 0 ){
+              let word = {"name" : "","type":0};
+              word.name = this.relation[i].relation;
+              this.association.push(word);
+              }
+          }
           this.isAvailable = false;
           this.show = true;
-
+          this.raffinement = reponse.Raffinement;
+          this.otherDef = reponse.otherDef;
+          //console.log(this.otherDef)
+          if(this.otherDef.length > 0 ){
+          this.element = this.otherDef.split("//DEF//");
+          
+          }
+          localStorage.setItem(this.myword.toString(), JSON.stringify(reponse));
         }
 
       },(error) => {
-       console.log("Error");
-     });
+       alert("Impossible de contacter le serveur");
+       this.isAvailable  = false;
+      });
+      }
     }
    
-    this.myid ="";
+    this.myword ="";
 }
 
 
@@ -98,17 +121,29 @@ export class BasicelementsComponent implements OnInit {
     this.show = false;
     this.isAvailable = false; 
     this.isnotfind = false;
+    this.definition = "";
+    this.node = [];
+    this.element = [];
+    
+  }
+  
+
+  initVar() : void {
+    this.definition ="";
+    this.error="";
+    this.articles  = "";  
+    this.show = false;
+    this.relation = null;
+    this.isnotfind = false;
+    this.element = [];  
+    this.association = [];
   }
 
-
+  getLocalStorage(word : string){
+    let usercache = JSON.parse(localStorage.getItem(word));
+    return usercache;
+  }
   
-  
-
 
 }
 
-interface myObject{
-   definition : String ; 
-   
-
-}
