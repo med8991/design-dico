@@ -13,7 +13,7 @@
                 </div>
             </div>
 
-            
+
             <!-- <fieldset class="form-group">
                 <div class="row">
                     <label class="btn btn-link btn-default">Critères</label>
@@ -39,7 +39,7 @@
             <div class="form-group row" style="text-align: center;">
                 <div class="col-sm-10">
                     <button type="submit" class="btn btn-primary btn"><i class="fa fa-search" id="chercher"></i>Chercher</button>
-                    
+
                 </div>
 
             </div>
@@ -56,18 +56,18 @@
 
         <div class="container-fluid" *ngIf="isAvailable">
             <div class="text-center">
-                <img src="assets/img/giphy2.gif"  alt="chargement" >
-                
+                <img src="assets/img/giphy2.gif" alt="chargement">
+
             </div>
         </div>
         <div class="container-fluid" *ngIf="isnotfind">
             <div class="text-center">
-                <img src="assets/img/ask.png"  alt="chargement" >
+                <img src="assets/img/ask.png" alt="chargement">
                 <h3>le mot <span style="color: brown;">{{message}}</span> n'existe pas</h3>
             </div>
         </div>
-        
-                <!-- <a href="#0" class="btn btn-link btn-default">Definition</a>
+
+        <!-- <a href="#0" class="btn btn-link btn-default">Definition</a>
                 <a href="#0" class="btn btn-link btn-primary">Raffinement</a>
                 <a href="#0" class="btn btn-link btn-success">Associations d'idées</a>
                 <a href="#0" class="btn btn-link btn-info">Theme/domaine</a>
@@ -75,35 +75,38 @@
                 <a href="#0" class="btn btn-link btn-danger">Traduction de maison</a>
                 <a href="#0" class="btn btn-link btn-neutral">Génériques</a>
              -->
-             
-        
-            <h5 *ngIf = "show" class="btn btn-link btn-warning">Définition</h5>
-            <br>
-            {{definition}}
-            <div class="rafinnement" *ngFor="let elem of element"> <p style="margin-left: 10px;">{{elem}}</p>   </div>
-            <br>
-            <br>
-            <div *ngIf = "show" >
-            <div *ngIf ="(nombre_raff_morphologique+nombre_raff_semantique) !=0 ">
-              <h5 class="btn btn-link btn-info" >Raffinement</h5>
+
+
+        <h5 *ngIf="show" class="btn btn-link btn-warning">Définition</h5>
+
+        <div [innerHtml]="definition"></div>
+
+        <div class="rafinnement" *ngFor="let elem of element">
+            <p style="margin-left: 10px;">{{elem}}</p>
+        </div>
+        <br>
+        <br>
+        <div *ngIf="show">
+            <div *ngIf="(nombre_raff_morphologique+nombre_raff_semantique) !=0 ">
+                <h5 class="btn btn-link btn-info">Raffinement</h5>
                 <br>
-                <div *ngIf = "nombre_raff_morphologique != 0 ">
-                   <h6 class="btn btn-link btn-info" style="margin-left: 20px;" *ngIf = "nombre_raff_morphologique != 0 ">{{nombre_raff_morphologique}} Raffinements morphologique <img src="assets/img/right-arrow.png" alt="" height="20px" width="20px"></h6>
+                <div *ngIf="nombre_raff_morphologique != 0 ">
+                    <h6 class="btn btn-link btn-info" style="margin-left: 20px;" *ngIf="nombre_raff_morphologique != 0 ">{{nombre_raff_morphologique}} Raffinements morphologique <img src="assets/img/right-arrow.png" alt="" height="20px" width="20px"></h6>
                     <p style="margin-left: 40px;" *ngFor="let rafM of raffinementMorph">{{message}}({{rafM.rfLink}})</p>
-                    <br> 
-                </div> 
-                <div *ngIf = "nombre_raff_semantique != 0">
-                    <h6 class="btn btn-link btn-info" style="margin-left: 20px;" >{{nombre_raff_semantique}} Raffinements sémantique  <img src="assets/img/right-arrow.png" alt="" height="20px" width="20px"> </h6>
+                    <br>
+                </div>
+                <div *ngIf="nombre_raff_semantique != 0">
+                    <h6 class="btn btn-link btn-info" style="margin-left: 20px;">{{nombre_raff_semantique}} Raffinements sémantique <img src="assets/img/right-arrow.png" alt="" height="20px" width="20px"> </h6>
                     <p style="margin-left: 40px;" *ngFor="let raf of raffinement">{{message}}({{raf.rfLink}})</p>
-                    <br>  
-                </div>  
+                    <br>
+                </div>
             </div>
-            
-             <h5 class="btn btn-link btn-success" >Association d'idées</h5>
-             <br>
-                <button type="button" *ngFor="let reltype of association | slice:0:showing_relation; " style="padding: 3px;" class="btn btn-default" (click)="searchWord(reltype.name)">{{reltype.name}}</button>
-                <img src="assets/img/next.png" class="next" (click)="imageClick()" style="margin-bottom :10px;" alt="[...]" height="15px" width="15px">
-            </div>
+
+            <h5 class="btn btn-link btn-success">Association d'idées</h5>
+            <br>
+            <button type="button" *ngFor="let reltype of association | slice:0:showing_relation; " style="padding: 3px;" class="btn btn-default" (click)="searchWord(reltype.name)">{{reltype.name}}</button>
+            <img src="assets/img/next.png" class="next" (click)="imageClick()" style="margin-bottom :10px;" alt="[...]" height="15px" width="15px">
+        </div>
 
         <!-- <div id="buttons">
             <div class="tim-title">
@@ -286,9 +289,9 @@
                 <nouislider class="slider slider-info" [connect]="true" [min]="0" [max]="100" [step]="1" [(ngModel)]="doubleSlider" [tooltips]="false"></nouislider>
             </div>
         </div> -->
-       
-            <!-- <h3 style="margin-top: 100px;">Loading ...</h3> -->
-    
-        
+
+        <!-- <h3 style="margin-top: 100px;">Loading ...</h3> -->
+
+
     </div>
 </div>

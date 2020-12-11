@@ -93,6 +93,8 @@ export class BasicelementsComponent implements OnInit {
           this.isnotfind = true;
         }else{
           this.definition = reponse.definition;
+          const br = /<br\W\/>/g;
+          this.definition = this.definition.replace(br,"<br>");
           
           this.relation = reponse.relation_sortant ; 
           for(let i = 0 ; i < this.relation.length ; i++){
@@ -189,7 +191,7 @@ export class BasicelementsComponent implements OnInit {
   
 
   getLocalStorage(word : string){
-    let usercache =null /*JSON.parse(localStorage.getItem(word));*/ 
+    let usercache = JSON.parse(localStorage.getItem(word));
     return usercache;
   }
   
