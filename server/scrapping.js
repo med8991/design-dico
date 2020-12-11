@@ -46,14 +46,13 @@ app.get("/myterm/:word", (req,res) => {
                   "node" : [],
                   "relation_sortant" : [],
                   "Raffinement":[],
+                  "Raffinement_Morpho":[],
                   "taille" : 0,
                   "otherDef" :""
                   };
               
               let matcheDef = data.match(myRegexp);
-              console.log(matcheDef)
               let matcheNode = data.match(myRegexpNod);
-              console.log(matcheNode)
               let map = new Map();
 
               if(matcheNode != null){
@@ -79,13 +78,34 @@ app.get("/myterm/:word", (req,res) => {
                  myRegexpRelSor=  new RegExp('r;[0-9]+;'+fisrtNode[1]+';[0-9]+;[0-9]+;[0-9]+','mg');  
 
               }
-              console.log(fisrtNode)
-              let myRegexpFormatedNod =  new RegExp('e;[0-9]+;\'[\\w > èîéôêâà -]+\';[0-9]+;[0-9]+;\''+wordsearch+'>[a-zA-Z èîéôêâà-]+\'','mg');
+              //console.log(fisrtNode)
+              let myRegexpFormatedNodMorf =  new RegExp('e;[0-9]+;\'[\\w > èîéôêâàï -]+\';[0-9]+;[0-9]+;\''+wordsearch+'>[a-zA-Z èîéôêâàï-]+:[a-zA-Z :+èîéôêâàï-]*\'','mg');
+              let myRegexpFormatedNod =  new RegExp('e;[0-9]+;\'[\\w > èîéôêâàï -]+\';[0-9]+;[0-9]+;\''+wordsearch+'>[a-zA-Z èîéôêâàï-]+\'','mg');
               //let myRegexpRelEnt=  new RegExp('r;[0-9]+;[0-9]+;'+fisrtNode[1]+';[0-9]+;[0-9]+','mg');
               //let matcheRelationEntry = data.match(myRegexpRelEnt);
-              console.log(myRegexpFormatedNod.toString())
               let matcheRelationExit = data.match(myRegexpRelSor);
-              let matchRaffinement = data.match(myRegexpFormatedNod)
+              let matchRaffinement = data.match(myRegexpFormatedNod);
+              let matcheNodeMorphologique = data.match(myRegexpFormatedNodMorf);
+
+              if(matcheNodeMorphologique != null){
+                for (let i = 0 ;  i <matcheNodeMorphologique.length ; i++) {
+                    var myObject = {
+                    "id" : '',
+                    "rfLink" : ''
+                  };
+                  let part = matcheNodeMorphologique[i].split(';');
+                  myObject.id = part[1];  
+                  let varsplit = part[5].split(">");
+                  let taille = varsplit[1].length;
+                  let cut = varsplit[1].substring(0,taille-1).split(':');
+                  myObject.rfLink = cut[0];
+                  mot.Raffinement_Morpho.push(myObject);
+
+
+              }
+              }
+              
+              console.log(matcheNodeMorphologique);
               if(matchRaffinement != null){
                 for(let i = 0 ; i < matchRaffinement.length ; i++){
                   var rafObject = {
@@ -100,7 +120,6 @@ app.get("/myterm/:word", (req,res) => {
                   mot.Raffinement.push(rafObject);
                 }
               }
-              console.log(matchRaffinement)
               if(matcheRelationExit != null){
                 for(let i = 0 ; i < matcheRelationExit.length ; i++){
                   var objectRel = {
@@ -123,10 +142,11 @@ app.get("/myterm/:word", (req,res) => {
                 }
               }
               
-              mot.word = req.params.word ; 
-              if(matcheDef[0].length < 25){
-                mot.definition = "Aucune";
-    
+              mot.word = req.params.word ;
+              if(matcheDef == null ){
+                mot.definition = "";
+              }else if (matcheDef[0].length < 25 ){
+                mot.definition = "";
               }else{
               let definition  = matcheDef[0].substring(5);  
               definition = definition.substring(0,definition.length-6).replace(br,"");
@@ -145,7 +165,8 @@ app.get("/myterm/:word", (req,res) => {
         });
       
       } catch(e) {
-          console.log("Error")
+          res.end(JSON.stringify(nofound));
+          console.log("Error");
       }
 
     } else{ 
@@ -243,7 +264,7 @@ function initJsonFile(filename,obj){
 
 
   app.listen(8888 ,() => {
-  	console.log("Server is Listening on port 8888")
+    console.log("Server is Listening on port 8888")
 
   
   })

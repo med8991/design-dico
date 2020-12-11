@@ -12,6 +12,7 @@
                     </div>
                 </div>
             </div>
+
             
             <!-- <fieldset class="form-group">
                 <div class="row">
@@ -76,20 +77,32 @@
              -->
              
         
-            <h6 *ngIf = "show" class="btn btn-link btn-warning">Définition</h6>
+            <h5 *ngIf = "show" class="btn btn-link btn-warning">Définition</h5>
             <br>
             {{definition}}
             <div class="rafinnement" *ngFor="let elem of element"> <p style="margin-left: 10px;">{{elem}}</p>   </div>
             <br>
             <br>
             <div *ngIf = "show" >
-            <h6 class="btn btn-link btn-info" >Raffinement</h6>
-            <br>
-             <p *ngFor="let raf of raffinement">{{message}}({{raf.rfLink}})</p>
-             <h6 class="btn btn-link btn-success" >Association d'idées</h6>
+            <div *ngIf ="(nombre_raff_morphologique+nombre_raff_semantique) !=0 ">
+              <h5 class="btn btn-link btn-info" >Raffinement</h5>
+                <br>
+                <div *ngIf = "nombre_raff_morphologique != 0 ">
+                   <h6 class="btn btn-link btn-info" style="margin-left: 20px;" *ngIf = "nombre_raff_morphologique != 0 ">{{nombre_raff_morphologique}} Raffinements morphologique <img src="assets/img/right-arrow.png" alt="" height="20px" width="20px"></h6>
+                    <p style="margin-left: 40px;" *ngFor="let rafM of raffinementMorph">{{message}}({{rafM.rfLink}})</p>
+                    <br> 
+                </div> 
+                <div *ngIf = "nombre_raff_semantique != 0">
+                    <h6 class="btn btn-link btn-info" style="margin-left: 20px;" >{{nombre_raff_semantique}} Raffinements sémantique  <img src="assets/img/right-arrow.png" alt="" height="20px" width="20px"> </h6>
+                    <p style="margin-left: 40px;" *ngFor="let raf of raffinement">{{message}}({{raf.rfLink}})</p>
+                    <br>  
+                </div>  
+            </div>
+            
+             <h5 class="btn btn-link btn-success" >Association d'idées</h5>
              <br>
-                <button type="button" *ngFor="let reltype of association | slice:0:30; " style="padding: 3px;" class="btn btn-default" (click)="searchWord(reltype.name)">{{reltype.name}}</button>
-
+                <button type="button" *ngFor="let reltype of association | slice:0:showing_relation; " style="padding: 3px;" class="btn btn-default" (click)="searchWord(reltype.name)">{{reltype.name}}</button>
+                <img src="assets/img/next.png" class="next" (click)="imageClick()" style="margin-bottom :10px;" alt="[...]" height="15px" width="15px">
             </div>
 
         <!-- <div id="buttons">
