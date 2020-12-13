@@ -8,11 +8,16 @@
                 <label class="btn btn-link btn-default">Le terme à rechercher</label>
                 <div class="col-sm-3">
                     <div class="form-group">
-                        <input type="text" class="form-control" id="idWord" [(ngModel)]="myword" placeholder="Saisir votre terme içi.." name="myword">
+                        <input matInput type="text" class="form-control" id="idWord" [formControl]="control" [(ngModel)]="myword" placeholder="Saisir votre terme ici.." name="myword" [matAutocomplete]="auto">
+                        <mat-autocomplete #auto="matAutocomplete">
+                            <mat-option *ngFor="let word of filteredWords | async" [value]="word">
+                              {{word}}
+                            </mat-option>
+                        </mat-autocomplete>
                     </div>
                 </div>
             </div>
-
+            
 
             <!-- <fieldset class="form-group">
                 <div class="row">

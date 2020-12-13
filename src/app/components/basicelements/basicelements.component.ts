@@ -1,9 +1,12 @@
 import { from, Subject } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { RezoService } from '../../rezo.service';
-import {NgForm} from '@angular/forms'
-
+import {FormControl, NgForm} from '@angular/forms'
+import { Observable } from 'rxjs/Observable';
+import * as fs from 'fs';
+import { resolveTxt } from 'dns';
+import {map, startWith} from 'rxjs/operators';
 
 
 @Component({
@@ -12,7 +15,15 @@ import {NgForm} from '@angular/forms'
   styleUrls: ['./basicelements.component.scss']
 })
 export class BasicelementsComponent implements OnInit {
-  
+  control = new FormControl();
+  filteredWords: Observable<string[]>;
+  url = "./assets/existingwords.txt";
+  public  words : string[] =[];
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.words.filter(word => word.toLowerCase().startsWith(filterValue));
+  }
   public ispressed : boolean ; 
   public definition : String ; 
   public search : any = [] ;
@@ -36,7 +47,8 @@ export class BasicelementsComponent implements OnInit {
   public nombre_raff_semantique : number ; 
   public nombre_raff_morphologique : number ; 
   public showing_relation : number ; 
-  constructor(private Reso : RezoService ,private http : HttpClient) { }
+  constructor(private Reso : RezoService ,private http : HttpClient) { 
+  }
 
   searchWord(mot : String){
     this.fromrelation = true ; 
@@ -47,7 +59,6 @@ export class BasicelementsComponent implements OnInit {
     console.log(entry)
     this.initVar();
     this.message = this.myword; 
-
     if(this.myword == null){
       console.log("Veuillez saisir un mot");
     }else{
@@ -134,13 +145,17 @@ export class BasicelementsComponent implements OnInit {
 
 
   ngOnInit() : void  {
+    this.getFile(this.url);
     this.show = false;
     this.isAvailable = false; 
     this.isnotfind = false;
     this.definition = "";
     this.node = [];
     this.element = [];
-    
+    this.filteredWords = this.control.valueChanges.pipe(
+      startWith(''),
+      map(value => value.length>=3 ? this._filter(value).slice(0,7): this.words.slice(0,0))
+    );
   }
   
   imageClick(){
@@ -194,6 +209,12 @@ export class BasicelementsComponent implements OnInit {
     let usercache = JSON.parse(localStorage.getItem(word));
     return usercache;
   }
+public getFile(url: string){
+    let txt:string;
+    const headers = new HttpHeaders().set('Content-Type', 'Accept-Encoding : undefined');
+    this.http.get(url, {headers, responseType: 'text' }).subscribe(data => {
+      this.words= data.split("\n");
+  }); }
   
 
 }

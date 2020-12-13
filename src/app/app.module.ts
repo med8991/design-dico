@@ -17,6 +17,11 @@ import { ComponentsModule } from './components/components.module';
 import { Error404Component } from './error404/error404.component';
 
 
+import{MatFormFieldModule} from '@angular/material/form-field';
+import{MatInputModule} from '@angular/material/input';
+import{MatAutocompleteModule} from '@angular/material/autocomplete';
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,8 +38,13 @@ import { Error404Component } from './error404/error404.component';
     HttpClientModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    Ng2PageScrollModule
-    
+    Ng2PageScrollModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
+    FormsModule,
+    BrowserAnimationsModule
   ],
   providers: [RezoService],
   bootstrap: [AppComponent]
