@@ -1,7 +1,7 @@
 <div class="section section-buttons" id="researchForm">
     <div class="container">
         <div class="tim-title">
-            <h2 style="text-align: center;">Faites votre recherche..</h2>
+            <h1 style="text-align: center;">Faites votre recherche..</h1>
         </div>
         <form (ngSubmit)="onSubmit(f)" #f="ngForm">
             <div class="form-group row">
@@ -30,7 +30,7 @@
             </div>
 
 
-            <!-- <fieldset class="form-group">
+            <fieldset class="form-group">
                 <div class="row">
                     <label class="btn btn-link btn-default">Critères</label>
                     <div class="col-sm-10">
@@ -50,7 +50,7 @@
                         </div>
                     </div>
                 </div>
-            </fieldset> -->
+            </fieldset>
 
             <div class="form-group row" style="text-align: center;">
                 <div class="col-sm-10">
@@ -61,14 +61,7 @@
             </div>
 
         </form>
-        <!-- <div ngbDropdown class="d-inline-block dropdown">
-            <a class="nav-link" id="dropdownBasic1" ngbDropdownToggle>La forme</a>
-            <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-primary">
-                <a class="dropdown-item">Id</a>
-                <a class="dropdown-item">r_associated - idée associé</a>
-                <a class="dropdown-item">r_domaine - domaine</a>
-            </div>
-        </div> -->
+
 
         <div class="container-fluid" *ngIf="isAvailable">
             <div class="text-center">
@@ -83,18 +76,9 @@
             </div>
         </div>
 
-        <!-- <a href="#0" class="btn btn-link btn-default">Definition</a>
-                <a href="#0" class="btn btn-link btn-primary">Raffinement</a>
-                <a href="#0" class="btn btn-link btn-success">Associations d'idées</a>
-                <a href="#0" class="btn btn-link btn-info">Theme/domaine</a>
-                <a href="#0" class="btn btn-link btn-warning">Synonymes et quasi-synonymes</a>
-                <a href="#0" class="btn btn-link btn-danger">Traduction de maison</a>
-                <a href="#0" class="btn btn-link btn-neutral">Génériques</a>
-             -->
-
 
         <div *ngIf="show">
-            <h5 class="btn btn-link btn-warning">Définition</h5>
+            <h2 class="btn btn-link btn-success">Définition</h2>
 
             <div [innerHtml]="definition"></div>
 
@@ -105,218 +89,36 @@
             <br>
             <div>
                 <div *ngIf="(nombre_raff_morphologique+nombre_raff_semantique) !=0 ">
-                    <h5 class="btn btn-link btn-info">Raffinement</h5>
+                    <h3 class="btn btn-link btn-warning">Raffinement</h3>
                     <br>
                     <div *ngIf="nombre_raff_morphologique != 0 ">
-                        <h6 class="btn btn-link btn-info" style="margin-left: 20px;" *ngIf="nombre_raff_morphologique != 0 ">{{nombre_raff_morphologique}} Raffinements morphologique <img src="assets/img/right-arrow.png" alt="" height="20px" width="20px"></h6>
+                        <h4 class="btn btn-outline-info" style="margin-left: 20px;" *ngIf="nombre_raff_morphologique != 0 ">({{nombre_raff_morphologique}}) : Raffinements morphologiques <img src="assets/img/right-arrow.png" alt="" height="20px" width="20px"></h4>
                         <p style="margin-left: 40px;" *ngFor="let rafM of raffinementMorph">{{message}}({{rafM.rfLink}})</p>
                         <br>
                     </div>
                     <div *ngIf="nombre_raff_semantique != 0">
-                        <h6 class="btn btn-link btn-info" style="margin-left: 20px;">{{nombre_raff_semantique}} Raffinements sémantique <img src="assets/img/right-arrow.png" alt="" height="20px" width="20px"> </h6>
+                        <h4 class="btn btn-outline-info" style="margin-left: 20px;">({{nombre_raff_semantique}}) : Raffinements sémantiques <img src="assets/img/right-arrow.png" alt="" height="20px" width="20px"> </h4>
                         <p style="margin-left: 40px;" *ngFor="let raf of raffinement">{{message}}({{raf.rfLink}})</p>
                         <br>
                     </div>
                 </div>
 
-                <h5 class="btn btn-link btn-success">Association d'idées</h5>
+                <h3 class="btn btn-link btn-danger">Associations d'idée</h3>
                 <br>
-                <button type="button" *ngFor="let reltype of association | slice:0:showing_relation; " style="padding: 3px;" class="btn btn-default" (click)="searchWord(reltype.name)">{{reltype.name}}</button>
-                <img src="assets/img/next.png" class="next" (click)="imageClick('association')" style="margin-bottom :10px;" alt="[...]" height="15px" width="15px">
+                <button type="button" *ngFor="let reltype of association | slice:0:showing_relation; " style="padding: 7px;" class="btn btn-outline-default btn-round" (click)="searchWord(reltype.name)">{{reltype.name}}</button>
+                <img src="assets/img/down.png" class="next" (click)="imageClick('association')" *ngIf="!ispressed" style="margin-bottom :10px;" alt="[...]" height="18px" width="18px">
+                <img src="assets/img/up.png" class="next" (click)="imageClick('association')" *ngIf="ispressed" style="margin-bottom :10px;" alt="[...]" height="18px" width="18px">
 
             </div>
         </div>
 
         <div *ngIf="isShown">
-            <h5 class="btn btn-link btn-success ">Termes associés</h5>
+            <h3 class="btn btn-link btn-danger ">Termes associés</h3>
             <br>
-            <button type="button " *ngFor="let rels of results | slice:0:showing_relation; " style="padding: 3px; " class="btn btn-neutral " (click)="searchWord(rels.name)">{{rels.name}}</button>
-            <img src="assets/img/next.png" class="next" (click)="imageClick('results')" style="margin-bottom :10px;" alt="[...]" height="15px" width="15px">
+            <button type="button " *ngFor="let rels of results | slice:0:showing_relation; " style="padding: 7px; " class="btn btn-outline-default btn-round" (click)="searchWord(rels.name)">{{rels.name}}</button>
+            <img src="assets/img/down.png" class="next" (click)="imageClick('results')" *ngIf="!ispressed" style="margin-bottom :10px;" alt="[...]" height="18px" width="18px">
+            <img src="assets/img/up.png" class="next" (click)="imageClick('results')" *ngIf="ispressed" style="margin-bottom :10px;" alt="[...]" height="18px" width="18px">
         </div>
-
-        <!-- <div id="buttons">
-            <div class="tim-title">
-                <h3>Buttons
-                    <br/>
-                    <small>Pick your style</small>
-                </h3>
-            </div>
-            <div class="row">
-                <div class="col-md-8">
-                    <button type="button" class="btn btn-danger">Default</button>
-                    <button type="button" class="btn btn-danger btn-round">Round</button>
-                    <button type="button" class="btn btn-danger btn-round"><i class="fa fa-heart"></i> With Icon</button>
-                    <button type="button" class="btn btn-danger btn-just-icon"><i class="fa fa-heart"></i></button>
-                    <button type="button" class="btn btn-danger btn-link">Simple</button>
-                </div>
-            </div>
-            <div class="tim-title">
-                <h3><small>Pick your size</small></h3>
-            </div>
-            <div class="row">
-                <div class="col-md-8">
-                    <button type="button" class="btn btn-outline-danger btn-sm">Small</button>
-                    <button type="button" class="btn btn-outline-danger">Regular</button>
-                    <button type="button" class="btn btn-outline-danger btn-lg">Large</button>
-                </div>
-            </div>
-            <div class="tim-title">
-                <h3><small>Pick your color</small></h3>
-            </div>
-            <div class="row">
-                <div class="col-md-8">
-                    <button type="button" class="btn btn-outline-default btn-round">Default</button><button type="button" class="btn btn-outline-primary btn-round">Primary</button>
-                    <button type="button" class="btn btn-outline-info btn-round">Info</button>
-                    <button type="button" class="btn btn-outline-success btn-round">Success</button>
-                    <button type="button" class="btn btn-outline-warning btn-round">Warning</button>
-                    <button type="button" class="btn btn-outline-danger btn-round">Danger</button>
-                </div>
-            </div>
-            <br/>
-            <div class="row">
-                <div class="col-md-8">
-                    <button type="button" class="btn btn-default btn-round">Default</button>
-                    <button type="button" class="btn btn-primary btn-round">Primary</button>
-                    <button type="button" class="btn btn-info btn-round">Info</button>
-                    <button type="button" class="btn btn-success btn-round">Success</button>
-                    <button type="button" class="btn btn-warning btn-round">Warning</button>
-                    <button type="button" class="btn btn-danger btn-round">Danger</button>
-                </div>
-            </div>
-        </div>
-        <br/>
-        <div class="tim-title">
-            <h3>Links</h3>
-        </div>
-        <div class="row">
-            <div class="col-md-8">
-                <a href="#0" class="btn btn-link btn-default">Default</a>
-                <a href="#0" class="btn btn-link btn-primary">Primary</a>
-                <a href="#0" class="btn btn-link btn-success">Success</a>
-                <a href="#0" class="btn btn-link btn-info">Info</a>
-                <a href="#0" class="btn btn-link btn-warning">Warning</a>
-                <a href="#0" class="btn btn-link btn-danger">Danger</a>
-                <a href="#0" class="btn btn-link btn-neutral">Neutral</a>
-            </div>
-        </div>
-        <br/>
-        <div class="tim-title">
-            <h3>Inputs</h3>
-        </div>
-        <div class="row">
-            <div class="col-sm-3">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Default">
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="form-group has-success">
-                    <input type="text" class="form-control form-control-success" id="inputSuccess1" value="Success">
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="form-group has-danger">
-                    <input type="text" class="form-control form-control-danger" id="inputDanger1" value="Error">
-                    <div class="form-control-feedback">Sorry, that username's taken. Try another?</div>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="input-group" [ngClass]="{'input-group-focus':focus===true}">
-                    <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1" (focus)="focus=true" (blur)="focus=false">
-                    <div class="input-group-append">
-                        <span class="input-group-text" id="basic-addon1"><i class="fa fa-group" aria-hidden="true"></i></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <br/>
-        <div class="row">
-            <div class="col-sm-6 col-lg-3">
-                <div class="tim-title">
-                    <h3>Checkboxes</h3>
-                </div>
-                <div class="form-check">
-                    <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox" value="">
-                    Unchecked
-                    <span class="form-check-sign"></span>
-                  </label>
-                </div>
-                <div class="form-check">
-                    <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox" value="" checked="">
-                    Checked
-                    <span class="form-check-sign"></span>
-                  </label>
-                </div>
-                <div class="form-check disabled">
-                    <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox" value="" disabled="">
-                    Disabled unchecked
-                    <span class="form-check-sign"></span>
-                  </label>
-                </div>
-                <div class="form-check disabled">
-                    <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox" value="" checked="" disabled="">
-                    Disabled checked
-                    <span class="form-check-sign"></span>
-                  </label>
-                </div>
-            </div>
-            <div class="col-sm-6 col-lg-3">
-                <div class="tim-title">
-                    <h3>Radio Buttons</h3>
-                </div>
-                <div class="form-check-radio">
-                    <label class="form-check-label">
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" >
-                    Radio is off
-                    <span class="form-check-sign"></span>
-                  </label>
-                </div>
-                <div class="form-check-radio">
-                    <label class="form-check-label">
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" checked="">
-                    Radio is on
-                    <span class="form-check-sign"></span>
-                  </label>
-                </div>
-                <div class="form-check-radio disabled">
-                    <label class="form-check-label">
-                    <input class="form-check-input" type="radio" name="exampleRadios1" id="exampleRadios3" value="option3" disabled="">
-                    Disabled Radio is off
-                    <span class="form-check-sign"></span>
-                  </label>
-                </div>
-                <div class="form-check-radio disabled">
-                    <label class="form-check-label">
-                    <input class="form-check-input" type="radio" name="exampleRadios1" id="exampleRadios4" value="option3" checked disabled="">
-                    Disabled Radio is on
-                    <span class="form-check-sign"></span>
-                  </label>
-                </div>
-            </div>
-            <div class="col-sm-6 col-lg-3">
-                <div class="tim-title">
-                    <h3>Toggle Buttons</h3>
-                </div>
-                <bSwitch [switch-on-color]="'primary'">
-                </bSwitch>
-                <bSwitch [switch-on-color]="'primary'" [(ngModel)]="state_default"> Toggle is off
-                </bSwitch>
-            </div>
-            <div class="col-sm-6 col-lg-3">
-                <div class="tim-title">
-                    <h3>Sliders</h3>
-                </div>
-                <nouislider [connect]="false" [min]="0" [max]="100" [step]="1" [(ngModel)]="simpleSlider" [tooltips]="false" class="slider"></nouislider>
-                <br>
-                <nouislider class="slider slider-info" [connect]="true" [min]="0" [max]="100" [step]="1" [(ngModel)]="doubleSlider" [tooltips]="false"></nouislider>
-            </div>
-        </div> -->
-
-        <!-- <h3 style="margin-top: 100px;">Loading ...</h3> -->
 
 
     </div>

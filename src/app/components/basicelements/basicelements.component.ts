@@ -54,6 +54,12 @@ export class BasicelementsComponent implements OnInit {
   public RelationSelectionee ="";
   public results = [];
 
+  page = 1;
+  pageSize = 4;
+
+  pageref = 1;
+  pageSizeref = 4;
+
   searchWord(mot : String){
     this.fromrelation = true ;
     console.log("[RelationSelectionee ------> searchWord : ]"+this.RelationSelectionee) 
@@ -198,18 +204,20 @@ export class BasicelementsComponent implements OnInit {
                     this.otherDef = reponse.otherDef;
                     this.raffinementMorph = reponse.Raffinement_Morpho ; 
                     
-                    if(this.definition.length ==0 && this.otherDef.length == 0)
+                    if(this.definition.length == 0 && this.otherDef.length == 0)
                     {
                       this.definition = "Aucune";
                     }
                     this.nombre_raff_semantique = reponse.Raffinement.length;
                     this.nombre_raff_morphologique = reponse.Raffinement_Morpho.length;
                   
-                    //console.log(this.otherDef)
+                    console.log("[Other def -------- : ]"+this.otherDef)
+                    console.log("[Other def size -------- : ]"+this.otherDef.length)
                     if(this.otherDef.length > 0 ){
                     this.element = this.otherDef.split("//DEF//");
 
                    }
+                   console.log("[Element content -------- : ]"+this.element)
                 
                   localStorage.setItem(this.myword.toString(), JSON.stringify(reponse));
                 }
@@ -316,6 +324,8 @@ export class BasicelementsComponent implements OnInit {
     let usercache = JSON.parse(localStorage.getItem(word));
     return usercache;
   }
+
+
 public getFile(url: string){
     let txt:string;
     const headers = new HttpHeaders().set('Content-Type', 'Accept-Encoding : undefined');
