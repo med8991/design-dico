@@ -31,7 +31,9 @@ export class BasicelementsComponent implements OnInit {
   public myid : String =null; 
   public node = [] ;
   public relation = [] ;
-  isAvailable = false ; 
+  isAvailable = false ;
+  public isSelected = false ; 
+  public isShown = false;
   public error :String;
   public myword : String;
   public show : boolean ;
@@ -47,101 +49,184 @@ export class BasicelementsComponent implements OnInit {
   public nombre_raff_semantique : number ; 
   public nombre_raff_morphologique : number ; 
   public showing_relation : number ; 
-  constructor(private Reso : RezoService ,private http : HttpClient) { 
-  }
+  constructor(private Reso : RezoService ,private http : HttpClient) { }
+  public allRelations: string [];
+  public RelationSelectionee ="";
+  public results = [];
 
   searchWord(mot : String){
-    this.fromrelation = true ; 
+    this.fromrelation = true ;
+    console.log("[RelationSelectionee ------> searchWord : ]"+this.RelationSelectionee) 
     this.onSubmit(mot);
 
   }
   onSubmit(entry : String) {
-    console.log(entry)
+    console.log("[entry] is : -----> "+entry)
+    console.log("[RelationSelectionee] is : -----> "+this.RelationSelectionee)
     this.initVar();
     this.message = this.myword; 
-    if(this.myword == null){
-      console.log("Veuillez saisir un mot");
-    }else{
-      this.isAvailable = true ; 
-      let varsend ;
-      if(typeof entry == 'string' && this.fromrelation == true ){
-        varsend = entry;
-        this.myword = entry ; 
-        this.message = entry ; 
-      }else{
-        varsend = this.myword;
-      }
-      let fromCache = this.getLocalStorage(varsend.toString());
-      if(fromCache != null){
-        this.definition = fromCache.definition;
-        this.otherDef = fromCache.otherDef;
-        this.relation = fromCache.relation_sortant;
-        for(let i = 0 ; i < this.relation.length ; i++){
-          if(this.relation[i].type == 0 ){
-            let word = {"name" : "","type":0};
-            word.name = this.relation[i].relation;
-            this.association.push(word);
-            }
-        }
-        console.log(this.association);
-          if(this.otherDef.length > 0 ){
-          this.element = this.otherDef.split("//DEF//");  
-          }
-        this.relation = fromCache.relation_sortant ; 
-        this.isAvailable = false;
-        this.show = true;
-        this.raffinement = fromCache.Raffinement;
-        this.nombre_raff_semantique = this.raffinement.length;
-
-      }else{
-
-      this.Reso.getWords(varsend).subscribe((reponse) => {
-        
-        if(typeof reponse === 'string'){
-          console.log("no things");
-          this.error = reponse;
-          this.isAvailable = false;
-          this.isnotfind = true;
-        }else{
-          this.definition = reponse.definition;
-          const br = /<br\W\/>/g;
-          this.definition = this.definition.replace(br,"<br>");
-          
-          this.relation = reponse.relation_sortant ; 
-          for(let i = 0 ; i < this.relation.length ; i++){
-            if(this.relation[i].type == 0 ){
-              let word = {"name" : "","type":0};
-              word.name = this.relation[i].relation;
-              this.association.push(word);
+    let RSelectionee = this.RelationSelectionee;
+    console.log("[RSelectionee] is : -----> "+RSelectionee)
+    if(this.myword == null)
+    {
+        console.log("Veuillez saisir un mot");
+    }else
+    {
+          if(RSelectionee != "") // [Selection effectuée]
+          { 
+              console.log("[------- Selection effectuée ------]")
+              this.isAvailable = false;
+              this.isShown = true; 
+              this.show = false;
+              let varsend ;
+              if(typeof entry == 'string' && this.fromrelation == true ){
+                varsend = entry;
+                this.myword = entry ; 
+                this.message = entry ; 
+              }else
+              {
+                varsend = this.myword;
               }
-          }
-          this.isAvailable = false;
-          this.show = true;
-          this.raffinement = reponse.Raffinement;
-          this.otherDef = reponse.otherDef;
-          this.raffinementMorph = reponse.Raffinement_Morpho ; 
-          if(this.definition.length ==0 && this.otherDef.length == 0){
-            this.definition = "Aucune";
-          }
-          this.nombre_raff_semantique = reponse.Raffinement.length;
-          this.nombre_raff_morphologique = reponse.Raffinement_Morpho.length;
-          
-          //console.log(this.otherDef)
-          if(this.otherDef.length > 0 ){
-          this.element = this.otherDef.split("//DEF//");
+              let fromCache = this.getLocalStorage(varsend.toString());
+              if(fromCache != null)
+              {
+                    this.relation = fromCache.relation_sortant;
+                    this.results = this.getWordRelations(this.RelationSelectionee);
+                    // this.results.sort(function(a, b) {
+                    //   return b.poids - a.poids;
+                    // });
+                    this.results.sort((a, b) => a.name.localeCompare(b.name));
+                    console.log(this.results);
+                    this.isShown = true;
+                    console.log("[serveur] : chui dedans ^^ +++++");
+                
+              }else
+              {
+                this.Reso.getWords(varsend).subscribe((reponse) => {
+            
+                    if(typeof reponse === 'string')
+                    {
+                      console.log("no things");
+                      this.error = reponse;
+                      this.isAvailable = false;
+                      this.isnotfind = true;
+                    }else
+                    {
+                        this.relation = reponse.relation_sortant;
+                        this.results = this.getWordRelations(this.RelationSelectionee);
+                        localStorage.setItem(this.myword.toString(), JSON.stringify(reponse));
+                    }
 
-          }
-          localStorage.setItem(this.myword.toString(), JSON.stringify(reponse));
-        }
+                },(error) => 
+                  {
+                    alert("Impossible de contacter le serveur");
+                    this.isAvailable  = false;
+                  });
+              }
+          }else
+            {  
+//-------------------------------------------------------------------------------------------------------------------//
 
-      },(error) => {
-       alert("Impossible de contacter le serveur");
-       this.isAvailable  = false;
-      });
-      }
+              console.log("[------- Pas de Selection ------]")
+              this.isAvailable = true;
+              this.isShown = false; 
+              let varsend ;
+              if(typeof entry == 'string' && this.fromrelation == true ){
+                varsend = entry;
+                this.myword = entry ; 
+                this.message = entry ; 
+              }else
+              {
+                varsend = this.myword;
+              }
+              let fromCache = this.getLocalStorage(varsend.toString());
+              if(fromCache != null)
+              {
+                    this.definition = fromCache.definition;
+                    this.otherDef = fromCache.otherDef;
+                    this.relation = fromCache.relation_sortant;
+                    for(let i = 0 ; i < this.relation.length ; i++){
+                      if(this.relation[i].type == 0 )
+                      {
+                        let word = {"name" : "","type":0}; // pour avoir l'id du mot, le poids.
+                        word.name = this.relation[i].relation;
+                        this.association.push(word);
+                      }
+                    }
+                    this.association.sort((a, b) => a.name.localeCompare(b.name));
+                    //console.log("---"+this.association);
+                    if(this.otherDef.length > 0 )
+                    {
+                      this.element = this.otherDef.split("//DEF//");  
+                    }
+                    this.relation = fromCache.relation_sortant ; 
+                    this.isAvailable = false;
+                    this.show = true;
+                    this.raffinement = fromCache.Raffinement;
+                    this.nombre_raff_semantique = this.raffinement.length;
+                  //}
+              }else
+              {
+                //console.log("[---------------------- Appel au serveur ----------------]")
+                this.Reso.getWords(varsend).subscribe((reponse) => {
+            
+                if(typeof reponse == 'string')
+                {
+                  console.log("no things");
+                  this.error = reponse;
+                  this.isAvailable = false;
+                  this.isnotfind = true;
+                }else
+                {
+                    this.definition = reponse.definition;
+                    const br = /<br\W\/>/g;
+                    this.definition = this.definition.replace(br,"<br>");
+                    
+                    this.relation = reponse.relation_sortant ; 
+                    for(let i = 0 ; i < this.relation.length ; i++){
+                      if(this.relation[i].type == 0 )
+                      {
+                        let word = {"name" : "","type":0};
+                        word.name = this.relation[i].relation;
+                        this.association.push(word);
+                      }
+                    }
+                    this.association.sort((a, b) => a.name.localeCompare(b.name));
+                    this.isAvailable = false;
+                    this.show = true;
+                    this.raffinement = reponse.Raffinement;
+                    this.otherDef = reponse.otherDef;
+                    this.raffinementMorph = reponse.Raffinement_Morpho ; 
+                    
+                    if(this.definition.length ==0 && this.otherDef.length == 0)
+                    {
+                      this.definition = "Aucune";
+                    }
+                    this.nombre_raff_semantique = reponse.Raffinement.length;
+                    this.nombre_raff_morphologique = reponse.Raffinement_Morpho.length;
+                  
+                    //console.log(this.otherDef)
+                    if(this.otherDef.length > 0 ){
+                    this.element = this.otherDef.split("//DEF//");
+
+                   }
+                
+                  localStorage.setItem(this.myword.toString(), JSON.stringify(reponse));
+                }
+
+              },(error) => 
+                {
+                  alert("Impossible de contacter le serveur");
+                  this.isAvailable  = false;
+                }); 
+            }
     }
-  this.fromrelation = false;
+    this.RelationSelectionee = ""; 
+    this.fromrelation = false;
+  
+  }
 }
+
 
 
   ngOnInit() : void  {
@@ -156,15 +241,57 @@ export class BasicelementsComponent implements OnInit {
       startWith(''),
       map(value => value.length>=3 ? this._filter(value).slice(0,7): this.words.slice(0,0))
     );
+    this.http.get('./assets/relations.json').subscribe(
+      data => {
+        this.allRelations = data as string [];	 // FILL THE ARRAY WITH DATA.
+      }
+    );
+  }
+
+  getWordRelations(RelationSelectionee){
+    let wordRelations = [];
+        for(let i = 0 ; i < this.relation.length ; i++){
+          if ( RelationSelectionee.includes((this.relation[i].type) )){
+             let word = {"name" : this.relation[i].relation,"type":this.relation[i].type,"poids":this.relation[i].poids}; 
+             word.name = this.relation[i].relation;
+             wordRelations.push(word);
+                  
+          }      
+          
+    }
+        wordRelations.sort();
+       return wordRelations; 
+  }
+
+  updateRelation(value){
+    this.RelationSelectionee = value;
+    if(this.RelationSelectionee != "")
+      {
+        this.isSelected = true;
+      }
+        if(this.RelationSelectionee == "")
+          {
+            this.isSelected = false;
+          }
+    console.log("value of relation selected : "+this.RelationSelectionee);
+  
   }
   
-  imageClick(){
+  imageClick(params){
+    console.log("---"+params);
+    
     if(this.ispressed){
       this.showing_relation = 30;
       this.ispressed = false;
     }else{
-      this.showing_relation = this.association.length;
-      this.ispressed = true;
+      if(params.includes('results')){
+        this.showing_relation = this.results.length;
+        this.ispressed = true;
+      }else{
+        this.showing_relation = this.association.length;
+        this.ispressed = true;
+      }
+      
     }
   }
 
@@ -183,27 +310,7 @@ export class BasicelementsComponent implements OnInit {
     this.raffinementMorph = [];
     this.nombre_raff_semantique = 0 ; 
     this.nombre_raff_morphologique = 0 ; 
-  }
-
-  fullListRelation() : void {
-      var obj1 = {"id" : 0 , "type" : "r_associated"} ;
-      var obj2= {"id" : 1 , "type" : "r_raff_sem"} ;
-      var obj3= {"id" : 2 , "type" : "r_raff_morpho"} ;
-      var obj4= {"id" : 3 , "type" : "r_domain"} ;
-      var obj5= {"id" : 4 , "type" : "r_pos"} ;
-      var obj6= {"id" : 5 , "type" : "r_syn"} ;
-      var obj7= {"id" : 6 , "type" : "r_anto"} ;
-      var obj8= {"id" : 7 , "type" : "r_hypo"} ;
-      var obj9= {"id" : 8 , "type" : "r_has_part"} ;
-      var obj10= {"id" : 9 , "type" : "r_holo"} ;
-      var obj11= {"id" : 10, "type" : "r_locution"} ;
-      var obj12= {"id" : 11, "type" : "r_flpot"} ;
-      var obj13= {"id" : 12, "type" : "r_patient"} ;
-      var obj14= {"id" : 13, "type" : "r_lieu"} ;
-    
-   
-  }
-  
+  };
 
   getLocalStorage(word : string){
     let usercache = JSON.parse(localStorage.getItem(word));

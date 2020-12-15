@@ -11,13 +11,24 @@
                         <input matInput type="text" class="form-control" id="idWord" [formControl]="control" [(ngModel)]="myword" placeholder="Saisir votre terme ici.." name="myword" [matAutocomplete]="auto">
                         <mat-autocomplete #auto="matAutocomplete">
                             <mat-option *ngFor="let word of filteredWords | async" [value]="word">
-                              {{word}}
+                                {{word}}
                             </mat-option>
                         </mat-autocomplete>
                     </div>
                 </div>
+                <label class="btn btn-link btn-default">Rechercher par relation</label>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <select id='relation' name="relation" class="form-control" [(ngModel)]='RelationSelectionee' (click)=updateRelation($event.target.value)>
+                            <option class="dropdown-item" selected value=""></option>
+                            <option *ngFor="let rel of allRelations" [value]="rel.id">
+                              {{rel.type}}
+                            </option>    
+                        </select>
+                    </div>
+                </div>
             </div>
-            
+
 
             <!-- <fieldset class="form-group">
                 <div class="row">
@@ -82,35 +93,45 @@
              -->
 
 
-        <h5 *ngIf="show" class="btn btn-link btn-warning">Définition</h5>
-
-        <div [innerHtml]="definition"></div>
-
-        <div class="rafinnement" *ngFor="let elem of element">
-            <p style="margin-left: 10px;">{{elem}}</p>
-        </div>
-        <br>
-        <br>
         <div *ngIf="show">
-            <div *ngIf="(nombre_raff_morphologique+nombre_raff_semantique) !=0 ">
-                <h5 class="btn btn-link btn-info">Raffinement</h5>
-                <br>
-                <div *ngIf="nombre_raff_morphologique != 0 ">
-                    <h6 class="btn btn-link btn-info" style="margin-left: 20px;" *ngIf="nombre_raff_morphologique != 0 ">{{nombre_raff_morphologique}} Raffinements morphologique <img src="assets/img/right-arrow.png" alt="" height="20px" width="20px"></h6>
-                    <p style="margin-left: 40px;" *ngFor="let rafM of raffinementMorph">{{message}}({{rafM.rfLink}})</p>
-                    <br>
-                </div>
-                <div *ngIf="nombre_raff_semantique != 0">
-                    <h6 class="btn btn-link btn-info" style="margin-left: 20px;">{{nombre_raff_semantique}} Raffinements sémantique <img src="assets/img/right-arrow.png" alt="" height="20px" width="20px"> </h6>
-                    <p style="margin-left: 40px;" *ngFor="let raf of raffinement">{{message}}({{raf.rfLink}})</p>
-                    <br>
-                </div>
-            </div>
+            <h5 class="btn btn-link btn-warning">Définition</h5>
 
-            <h5 class="btn btn-link btn-success">Association d'idées</h5>
+            <div [innerHtml]="definition"></div>
+
+            <div class="rafinnement" *ngFor="let elem of element">
+                <p style="margin-left: 10px;">{{elem}}</p>
+            </div>
             <br>
-            <button type="button" *ngFor="let reltype of association | slice:0:showing_relation; " style="padding: 3px;" class="btn btn-default" (click)="searchWord(reltype.name)">{{reltype.name}}</button>
-            <img src="assets/img/next.png" class="next" (click)="imageClick()" style="margin-bottom :10px;" alt="[...]" height="15px" width="15px">
+            <br>
+            <div>
+                <div *ngIf="(nombre_raff_morphologique+nombre_raff_semantique) !=0 ">
+                    <h5 class="btn btn-link btn-info">Raffinement</h5>
+                    <br>
+                    <div *ngIf="nombre_raff_morphologique != 0 ">
+                        <h6 class="btn btn-link btn-info" style="margin-left: 20px;" *ngIf="nombre_raff_morphologique != 0 ">{{nombre_raff_morphologique}} Raffinements morphologique <img src="assets/img/right-arrow.png" alt="" height="20px" width="20px"></h6>
+                        <p style="margin-left: 40px;" *ngFor="let rafM of raffinementMorph">{{message}}({{rafM.rfLink}})</p>
+                        <br>
+                    </div>
+                    <div *ngIf="nombre_raff_semantique != 0">
+                        <h6 class="btn btn-link btn-info" style="margin-left: 20px;">{{nombre_raff_semantique}} Raffinements sémantique <img src="assets/img/right-arrow.png" alt="" height="20px" width="20px"> </h6>
+                        <p style="margin-left: 40px;" *ngFor="let raf of raffinement">{{message}}({{raf.rfLink}})</p>
+                        <br>
+                    </div>
+                </div>
+
+                <h5 class="btn btn-link btn-success">Association d'idées</h5>
+                <br>
+                <button type="button" *ngFor="let reltype of association | slice:0:showing_relation; " style="padding: 3px;" class="btn btn-default" (click)="searchWord(reltype.name)">{{reltype.name}}</button>
+                <img src="assets/img/next.png" class="next" (click)="imageClick('association')" style="margin-bottom :10px;" alt="[...]" height="15px" width="15px">
+
+            </div>
+        </div>
+
+        <div *ngIf="isShown">
+            <h5 class="btn btn-link btn-success ">Termes associés</h5>
+            <br>
+            <button type="button " *ngFor="let rels of results | slice:0:showing_relation; " style="padding: 3px; " class="btn btn-neutral " (click)="searchWord(rels.name)">{{rels.name}}</button>
+            <img src="assets/img/next.png" class="next" (click)="imageClick('results')" style="margin-bottom :10px;" alt="[...]" height="15px" width="15px">
         </div>
 
         <!-- <div id="buttons">
