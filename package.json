@@ -1,5 +1,5 @@
 {
-  "name": "paper-kit-2-angular",
+  "name": "design-dico",
   "version": "1.3.0",
   "license": "MIT",
   "repository": {
@@ -13,11 +13,12 @@
   },
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node server.js",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "heroku-postbuild": "ng build --prod",
     "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start"
   },
   "dependencies": {
@@ -45,7 +46,10 @@
     "popper.js": "^1.14.4",
     "rxjs": "6.5.4",
     "rxjs-compat": "6.5.4",
-    "zone.js": "0.10.2"
+    "zone.js": "0.10.2",
+    "typescript": "3.7.5",
+    "@angular/compiler-cli": "9.0.6"
+
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "0.900.6",
@@ -67,5 +71,9 @@
     "ts-node": "3.0.4",
     "tslint": "6.1.0",
     "typescript": "3.7.5"
+  },
+  "engines": {
+    "node": "12.13.0",
+    "npm": "6.14.8"
   }
 }

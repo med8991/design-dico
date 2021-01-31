@@ -1,4 +1,4 @@
-<div class="section section-buttons" id="researchForm">
+<div class="section section-buttons" id="researchForm" >
     <div class="container">
         <div class="tim-title">
             <h1 style="text-align: center;">Faites votre recherche..</h1>
@@ -30,28 +30,7 @@
             </div>
 
 
-            <fieldset class="form-group">
-                <div class="row">
-                    <label class="btn btn-link btn-default">Critères</label>
-                    <div class="col-sm-10">
-                        <div class="form-check">
-                            <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" id="option1" value="" name="">
-                            Pas de relations entrantes
-                            <span class="form-check-sign"></span>
-                          </label>
-                        </div>
-                        <div class="form-check">
-                            <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" id="option2" value="">
-                            Pas de relations sortantes
-                            <span class="form-check-sign"></span>
-                          </label>
-                        </div>
-                    </div>
-                </div>
-            </fieldset>
-
+         
             <div class="form-group row" style="text-align: center;">
                 <div class="col-sm-10">
                     <button type="submit" class="btn btn-primary btn"><i class="fa fa-search" id="chercher"></i>Chercher</button>
@@ -83,29 +62,30 @@
             <div [innerHtml]="definition"></div>
 
             <div class="rafinnement" *ngFor="let elem of element">
-                <p style="margin-left: 10px;">{{elem}}</p>
+                <p style="margin-left: 10px;" [innerHtml]="elem"></p>
             </div>
             <br>
-            <br>
+            
             <div>
                 <div *ngIf="(nombre_raff_morphologique+nombre_raff_semantique) !=0 ">
                     <h3 class="btn btn-link btn-warning">Raffinement</h3>
                     <br>
                     <div *ngIf="nombre_raff_morphologique != 0 ">
-                        <h4 class="btn btn-outline-info" style="margin-left: 20px;" *ngIf="nombre_raff_morphologique != 0 ">({{nombre_raff_morphologique}}) : Raffinements morphologiques <img src="assets/img/right-arrow.png" alt="" height="20px" width="20px"></h4>
+                        <h4 class="btn btn-outline-info" style="margin-left: 20px;" *ngIf="nombre_raff_morphologique != 0 ">({{nombre_raff_morphologique}}) : Raffinements morphologiques </h4>
                         <p style="margin-left: 40px;" *ngFor="let rafM of raffinementMorph">{{message}}({{rafM.rfLink}})</p>
                         <br>
                     </div>
                     <div *ngIf="nombre_raff_semantique != 0">
-                        <h4 class="btn btn-outline-info" style="margin-left: 20px;">({{nombre_raff_semantique}}) : Raffinements sémantiques <img src="assets/img/right-arrow.png" alt="" height="20px" width="20px"> </h4>
-                        <p style="margin-left: 40px;" *ngFor="let raf of raffinement">{{message}}({{raf.rfLink}})</p>
+                        <h4 class="btn btn-outline-info" style="margin-left: 20px;">Raffinements sémantiques : ({{nombre_raff_semantique}})   </h4>
+                        <p  style="margin-left: 40px;" *ngFor="let raf of raffinement" class="raffinement_style" (click)="raffinementClick(message+'>'+raf.rfLink)">{{message}} ({{raf.rfLink}})</p>
+
                         <br>
                     </div>
                 </div>
 
                 <h3 class="btn btn-link btn-danger">Associations d'idée</h3>
                 <br>
-                <button type="button" *ngFor="let reltype of association | slice:0:showing_relation; " style="padding: 7px;" class="btn btn-outline-default btn-round" (click)="searchWord(reltype.name)">{{reltype.name}}</button>
+                <button type="button" *ngFor="let reltype of association | slice:0:showing_relation; " style="padding: 7px;" class="btn btn-default" (click)="searchWord(reltype.name)" title="type : {{reltype.type}} // poids : {{reltype.poids}}">{{reltype.name}}</button>
                 <img src="assets/img/down.png" class="next" (click)="imageClick('association')" *ngIf="!ispressed" style="margin-bottom :10px;" alt="[...]" height="18px" width="18px">
                 <img src="assets/img/up.png" class="next" (click)="imageClick('association')" *ngIf="ispressed" style="margin-bottom :10px;" alt="[...]" height="18px" width="18px">
 
@@ -115,7 +95,7 @@
         <div *ngIf="isShown">
             <h3 class="btn btn-link btn-danger ">Termes associés</h3>
             <br>
-            <button type="button " *ngFor="let rels of results | slice:0:showing_relation; " style="padding: 7px; " class="btn btn-outline-default btn-round" (click)="searchWord(rels.name)">{{rels.name}}</button>
+            <button type="button " *ngFor="let rels of results | slice:0:showing_relation; " style="padding: 7px; " class="btn btn-default" (click)="searchWord(rels.name)" title="type : {{rels.type}} // poids : {{rels.poids}}">{{rels.name}}</button>
             <img src="assets/img/down.png" class="next" (click)="imageClick('results')" *ngIf="!ispressed" style="margin-bottom :10px;" alt="[...]" height="18px" width="18px">
             <img src="assets/img/up.png" class="next" (click)="imageClick('results')" *ngIf="ispressed" style="margin-bottom :10px;" alt="[...]" height="18px" width="18px">
         </div>

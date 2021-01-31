@@ -192,8 +192,9 @@ export class BasicelementsComponent implements OnInit {
                     for(let i = 0 ; i < this.relation.length ; i++){
                       if(this.relation[i].type == 0 )
                       {
-                        let word = {"name" : "","type":0};
+                        let word = {"name" : "","type":0,"poids":0};
                         word.name = this.relation[i].relation;
+                        word.poids = this.relation[i].poids;
                         this.association.push(word);
                       }
                     }
@@ -323,6 +324,12 @@ export class BasicelementsComponent implements OnInit {
   getLocalStorage(word : string){
     let usercache = JSON.parse(localStorage.getItem(word));
     return usercache;
+  }
+
+  
+  raffinementClick(raf : String){
+    this.fromrelation = true ; 
+    this.onSubmit(raf);
   }
 
 
