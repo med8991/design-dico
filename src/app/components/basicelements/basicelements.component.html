@@ -42,6 +42,7 @@
         </form>
 
 
+
         <div class="container-fluid" *ngIf="isAvailable">
             <div class="text-center">
                 <img src="assets/img/giphy2.gif" alt="chargement">
@@ -59,7 +60,7 @@
         <div *ngIf="show">
             <h2 class="btn btn-link btn-success">Définition</h2>
 
-            <div [innerHtml]="definition"></div>
+            <div [innerHtml]="definition" style="background-color: aliceblue; padding:30px;border-radius: 15px;"></div>
 
             <div class="rafinnement" *ngFor="let elem of element">
                 <p style="margin-left: 10px;" [innerHtml]="elem"></p>
@@ -83,7 +84,7 @@
                     </div>
                 </div>
 
-                <h3 class="btn btn-link btn-danger">Associations d'idée</h3>
+                <h3 class="btn btn-link btn-danger" >Associations d'idée <button type="button " class="btn btn-link btn-danger">P</button><button class="btn btn-link btn-danger">AL</button></h3>
                 <br>
                 <button type="button" *ngFor="let reltype of association | slice:0:showing_relation; " style="padding: 7px;" class="btn btn-default" (click)="searchWord(reltype.name)" title="type : {{reltype.type}} // poids : {{reltype.poids}}">{{reltype.name}}</button>
                 <img src="assets/img/down.png" class="next" (click)="imageClick('association')" *ngIf="!ispressed" style="margin-bottom :10px;" alt="[...]" height="18px" width="18px">
@@ -102,4 +103,5 @@
 
 
     </div>
+    
 </div>

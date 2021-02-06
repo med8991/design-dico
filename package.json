@@ -13,7 +13,7 @@
   },
   "scripts": {
     "ng": "ng",
-    "start": "node server.js",
+    "start": "node serveur.js",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -22,6 +22,7 @@
     "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start"
   },
   "dependencies": {
+    "-": "0.0.1",
     "@angular/animations": "^9.1.12",
     "@angular/cdk": "^11.0.2",
     "@angular/common": "9.0.6",
@@ -37,24 +38,26 @@
     "@ng-bootstrap/ng-bootstrap": "6.0.0",
     "bootstrap": "4.1.2",
     "core-js": "3.6.4",
+    "express": "^4.17.1",
+    "g": "^2.0.1",
     "jquery": "3.2.1",
     "jw-bootstrap-switch-ng2": "2.0.1",
     "ng2-nouislider": "1.7.12",
     "ng2-page-scroll": "^4.0.0-beta.12",
     "ngx-spinner": "^10.0.1",
     "nouislider": "9.2.0",
+    "npm": "^7.5.2",
+    "path": "^0.12.7",
     "popper.js": "^1.14.4",
     "rxjs": "6.5.4",
     "rxjs-compat": "6.5.4",
-    "zone.js": "0.10.2",
     "typescript": "3.7.5",
-    "@angular/compiler-cli": "9.0.6"
-
+    "zone.js": "0.10.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "0.900.6",
-    "@angular/cli": "9.0.6",
-    "@angular/compiler-cli": "9.0.6",
+    "@angular/cli": "^9.0.6",
+    "@angular/compiler-cli": "^9.0.6",
     "@angular/language-service": "9.0.6",
     "@types/jasmine": "3.5.9",
     "@types/node": "^13.9.1",
