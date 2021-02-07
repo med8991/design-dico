@@ -13,12 +13,12 @@
   },
   "scripts": {
     "ng": "ng",
-    "start": "node serveur.js",
+    "start": "node server.js",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "heroku-postbuild": "ng build --prod",
+    "heroku-postbuild": "ng build --aot --prod ",
     "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start"
   },
   "dependencies": {

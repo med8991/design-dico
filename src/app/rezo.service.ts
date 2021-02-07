@@ -18,7 +18,7 @@ const httpOptions = {
 })
 export class RezoService {
 
-  private BaseUrl : String = "https://jxdm.herokuapp.com/myterm/"
+  private BaseUrl : String = "https://jxdm.herokuapp.com/"
   
 
   constructor(private httpClient : HttpClient) { }
